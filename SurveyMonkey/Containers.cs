@@ -130,22 +130,43 @@ namespace SurveyMonkey
         public string Text { get; set; }
     }
 
+	[JsonConverter(typeof(LaxPropertyNameJsonConverter))]
+	public class Recipient
+	{
+		[JsonProperty("recipient_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
+		public long RecipientId { get; set; }
+		[JsonProperty("email")]
+		public string Email { get; set; }
+		[JsonProperty("first_name")]
+		public string FirstName { get; set; }
+		[JsonProperty("last_name")]
+		public string LastName { get; set; }
+		[JsonProperty("custom_id")]
+		public string CustomId {get; set; }
+	}
+
+	[JsonConverter(typeof(LaxPropertyNameJsonConverter))]
+	public class RecipientReport
+	{
+		public List<Recipient> Recipients { get; set; }
+		public long ValidEmailsCount { get; set; }
+		public List<string> InvalidEmails { get; set; }
+		public List<string> DuplicateEmails { get; set; }
+		public List<string> BouncedEmails { get; set; }
+		public List<string> OptedOutEmails { get; set; }
+	}
+
     [JsonConverter(typeof(LaxPropertyNameJsonConverter))]
-    public class Respondent
+    public class Respondent: Recipient
     {
         public long RespondentId { get; set; }
         public DateTime DateStart { get; set; }
         public DateTime DateModified { get; set; }
         public long CollectorId { get; set; }
         public RespondentCollectionMode CollectionMode { get; set; }
-        public string CustomId { get; set; }
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string IpAddress { get; set; }
         public RespondentStatus Status { get; set; }
         public string AnalysisUrl { get; set; }
-        public string RecipientId { get; set; }
     }
 
     [JsonConverter(typeof(LaxPropertyNameJsonConverter))]

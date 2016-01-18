@@ -210,6 +210,39 @@ namespace SurveyMonkey
 
         #endregion
 
+		#region CreateRecipients endpoint
+
+		//TODO: CreateRecipientsSettings
+
+		public RecipientReport CreateRecipients(long collectorId, List<Recipient> recipients)
+		{
+			return CreateRecipients(collectorId, recipients, null);
+		}
+
+		private RecipientReport CreateRecipients(long collectorId, List<Recipient> recipients, object settings)
+		{
+			RequestSettings parameters = new RequestSettings();
+			parameters.Add("collector_id", collectorId.ToString());
+			parameters.Add("recipients", recipients);
+			return CreateRecipientsRequest(parameters);
+		}
+
+		private RecipientReport CreateRecipientsRequest(RequestSettings parameters)
+		{
+			try {
+				const string endPoint = "/collectors/create_recipients";
+				var o = MakeApiRequest(endPoint, parameters);
+				RecipientReport report = o["recipients_report"].ToObject<RecipientReport>();
+				return report;
+			}
+			catch (Exception e)
+			{
+				throw new SurveyMonkeyException("Error communicating with endpoint", e);
+			}
+		}
+
+		#endregion
+
         #region GetRespondentList endpoint
 
         //TODO: deal with account upgrade notifications
